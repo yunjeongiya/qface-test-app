@@ -631,11 +631,14 @@ public class QFM_SDK_ANDROID extends QFM_SDK_CALLBACK_INTERFACE {
     private void setFilters() {
         if (mHandler != null) {
             IntentFilter filter = new IntentFilter();
+            filter.addAction(UsbService.ACTION_USB_READY);  // Serial port opened successfully
             filter.addAction(UsbService.ACTION_USB_PERMISSION_GRANTED);
             filter.addAction(UsbService.ACTION_NO_USB);
             filter.addAction(UsbService.ACTION_USB_DISCONNECTED);
             filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED);
             filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED);
+            filter.addAction(UsbService.ACTION_CDC_DRIVER_NOT_WORKING);
+            filter.addAction(UsbService.ACTION_USB_DEVICE_NOT_WORKING);
             if (mUsbReceiver != null)
                 mActivity.registerReceiver(mUsbReceiver, filter);
         }

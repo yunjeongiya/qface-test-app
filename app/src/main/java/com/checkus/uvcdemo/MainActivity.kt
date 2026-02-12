@@ -48,20 +48,32 @@ class MainActivity : CameraActivity() {
     private var messageHandler: MessageHandler? = null
     private var isIrConnected = false
     private var isIrInitialized = false
+    private var isConnecting = false  // Flag to ignore disconnect during re-enumeration
 
     // USB broadcast receiver for IR camera (serial communication)
     private val irUsbReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
-                UsbService.ACTION_USB_PERMISSION_GRANTED -> {
-                    Log.d(TAG, "IR USB Permission Granted")
+                UsbService.ACTION_USB_READY -> {
+                    // This is the real success signal - serial port is open and ready
+                    Log.d(TAG, "IR USB Ready (serial port opened)")
                     isIrConnected = true
-                    updateIrStatus("IR Camera: Permission Granted")
-                    // Initialize SDK after permission granted
+                    isConnecting = false
+                    updateIrStatus("IR Camera: Ready")
                     initializeSdkCommunication()
                 }
+                UsbService.ACTION_USB_PERMISSION_GRANTED -> {
+                    Log.d(TAG, "IR USB Permission Granted")
+                    isConnecting = true  // Set flag to ignore temporary disconnect
+                    updateIrStatus("IR Camera: Connecting...")
+                }
                 UsbService.ACTION_USB_DISCONNECTED -> {
-                    Log.d(TAG, "IR USB Disconnected")
+                    Log.d(TAG, "IR USB Disconnected (isConnecting=$isConnecting)")
+                    if (isConnecting) {
+                        // Ignore disconnect during permission grant re-enumeration
+                        Log.d(TAG, "Ignoring disconnect during connection phase")
+                        return
+                    }
                     isIrConnected = false
                     isIrInitialized = false
                     updateIrStatus("IR Camera: Disconnected")
@@ -70,17 +82,32 @@ class MainActivity : CameraActivity() {
                 UsbService.ACTION_NO_USB -> {
                     Log.d(TAG, "No IR USB Device")
                     isIrConnected = false
+                    isConnecting = false
                     updateIrStatus("IR Camera: No Device")
                 }
                 UsbService.ACTION_USB_NOT_SUPPORTED -> {
                     Log.d(TAG, "IR USB Not Supported")
                     isIrConnected = false
+                    isConnecting = false
                     updateIrStatus("IR Camera: Not Supported")
                 }
                 UsbService.ACTION_USB_PERMISSION_NOT_GRANTED -> {
                     Log.d(TAG, "IR USB Permission Not Granted")
                     isIrConnected = false
+                    isConnecting = false
                     updateIrStatus("IR Camera: Permission Denied")
+                }
+                UsbService.ACTION_CDC_DRIVER_NOT_WORKING -> {
+                    Log.e(TAG, "CDC Driver not working")
+                    isIrConnected = false
+                    isConnecting = false
+                    updateIrStatus("IR Camera: Driver Error")
+                }
+                UsbService.ACTION_USB_DEVICE_NOT_WORKING -> {
+                    Log.e(TAG, "USB Device not working")
+                    isIrConnected = false
+                    isConnecting = false
+                    updateIrStatus("IR Camera: Device Error")
                 }
             }
         }
