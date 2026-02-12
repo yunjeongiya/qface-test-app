@@ -27,10 +27,63 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@id/infoText"
+        app:layout_constraintBottom_toTopOf="@id/buttonContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusText" />
+
+    <!-- Face Recognition Control Buttons -->
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#80000000"
+        app:layout_constraintBottom_toTopOf="@id/irStatusText">
+
+        <Button
+            android:id="@+id/btnEnroll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="Enroll (IR)"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/btnIdentify"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="Identify (IR)"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/btnDeleteAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="Delete All"
+            android:enabled="false" />
+
+    </LinearLayout>
+
+    <!-- IR Camera Status -->
+    <TextView
+        android:id="@+id/irStatusText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="IR Camera: Not Connected"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/infoText" />
 
     <!-- Info Text at Bottom -->
     <TextView
@@ -40,7 +93,7 @@
         android:background="#80000000"
         android:gravity="center"
         android:padding="12dp"
-        android:text="UVC Camera Demo for Q-Face Pro"
+        android:text="Q-Face Pro Demo: UVC Preview + IR Face Recognition"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent" />

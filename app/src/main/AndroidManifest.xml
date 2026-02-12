@@ -19,6 +19,8 @@
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+    <!-- For USB serial service (Q-Face IR camera) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -48,6 +50,12 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
+
+        <!-- USB Service for Q-Face IR camera serial communication -->
+        <service
+            android:name="com.suprema_ai.qfm_sdk_android.UsbService"
+            android:enabled="true"
+            android:exported="false" />
 
     </application>
 

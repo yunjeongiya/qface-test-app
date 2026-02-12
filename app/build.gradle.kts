@@ -60,6 +60,9 @@ dependencies {
     // Original jiangdongguo 3.3.3 has broken JitPack uploads (missing AARs)
     implementation("com.github.chenyeju295.AndroidUSBCamera:libausbc:3.3.6")
 
+    // UsbSerial for Q-Face IR camera serial communication
+    implementation("com.github.felHR85:UsbSerial:6.1.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
