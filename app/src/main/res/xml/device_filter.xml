@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Q-Face Pro UVC Camera -->
+    <!-- VID: 0x36E5 (14053), PID: 0x0101 (257) -->
+    <usb-device vendor-id="14053" product-id="257" />
+
+    <!-- Allow any UVC camera for testing -->
+    <!-- UVC devices typically use class 239 (0xEF) for miscellaneous -->
+    <usb-device class="239" subclass="2" />
+</resources>
